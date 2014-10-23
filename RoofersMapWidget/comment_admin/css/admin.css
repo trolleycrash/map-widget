@@ -1,0 +1,10 @@
+.map-div {
+	height:200px;
+}
+
+.alert-dismissible {
+	display:none;
+	position: fixed;
+	top:0;
+	width:100%;
+}
