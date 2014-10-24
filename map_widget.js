@@ -10,7 +10,8 @@ Licensed under the MIT License (http://opensource.org/licenses/MIT)
 		return this
 				.each(function() {
 					var opts = $.extend({
-						input_file:"comments.json"
+						input_file:"comments.json",
+						include_path:"./"
 					}, options);
 					
 					var template = $.templates.map_template;
@@ -30,11 +31,14 @@ Licensed under the MIT License (http://opensource.org/licenses/MIT)
 							markers.push(marker);
 							
 							marker.contentString = template.render(data.customers[i]);
-							marker.setIcon('classic-pip.png');
+							marker.setIcon('classic-pip' + (data.customers[i].comments.length>10?"+10":data.customers[i].comments.length) + '.png');
 							marker.customer = data.customers[i];
  
 							google.maps.event.addListener(marker, 'click', function() {
 								this.customer.idx = 0;
+								this.contentString = template.render(this.customer);
+								infowindow.setContent(this.contentString);
+								infowindow.open(map,this);
 								initInfoWindow(this);
 							});
 							
@@ -51,16 +55,17 @@ Licensed under the MIT License (http://opensource.org/licenses/MIT)
 					
 					function initInfoWindow(marker) {
 						var customer = marker.customer;
-						console.log(customer);
-						marker.contentString = template.render(customer);
-						infowindow.setContent(marker.contentString);
-						infowindow.open(map,marker);
+
 						var pager = $(map_container).find('.pager');
 						pager.click(function() {
-							console.log('click');
 							var el = $(this);
 							var iw = el.parent().parent();
 							marker.customer.idx = el.attr('data-rel');
+							var idx = marker.customer.idx;
+							iw.find('.comment').removeClass('selected-comment');
+							iw.find('.pager').removeClass('selected-pager');
+							$(iw.find('.comment')[idx]).addClass('selected-comment');
+							$(iw.find('.pager')[idx]).addClass('selected-pager');
 							initInfoWindow(marker);
 						});
 					}
