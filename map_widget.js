@@ -11,20 +11,21 @@ Licensed under the MIT License (http://opensource.org/licenses/MIT)
 				.each(function() {
 					var opts = $.extend({
 						input_file:"comments.json",
-						include_path:"./"
+						include_path:"./",
+						iw_width:230
 					}, options);
 					
 					var template = $.templates.map_template;
 					var map_container = this;
-					var map = new google.maps.Map(map_container, {zoom: 14, center: new google.maps.LatLng(0,0)});
+					var map = new google.maps.Map(map_container, {zoom: 14, center: new google.maps.LatLng(0,0), disableDefaultUI: true});
 					var markers = [];
-					var infowindow = new google.maps.InfoWindow();
+					var infowindow = new google.maps.InfoWindow({maxWidth: opts.iw_width});
+					google.maps.event.addListener(infowindow,'closeclick',fitBounds);
 						
 					$.getJSON( opts.include_path + opts.input_file, function(data) {
-						var latlngbounds = new google.maps.LatLngBounds();
 						for(var i in data.customers) {
 							var pos = new google.maps.LatLng(data.customers[i].lat, data.customers[i].lng)
-							latlngbounds.extend(pos);							
+							
 							var marker = new google.maps.Marker( {
 								position : pos
 							} );
@@ -46,10 +47,7 @@ Licensed under the MIT License (http://opensource.org/licenses/MIT)
 						}
 						
 						if(data.customers && data.customers.length) {
-							/*var mcOptions = {gridSize: 50, maxZoom: 15};
-							var mc = new MarkerClusterer(map, markers, mcOptions);*/
-							map.setCenter(latlngbounds.getCenter());
-							map.fitBounds(latlngbounds);
+							fitBounds()
 						}
 					});
 					
@@ -68,6 +66,15 @@ Licensed under the MIT License (http://opensource.org/licenses/MIT)
 							$(iw.find('.pager')[idx]).addClass('selected-pager');
 							initInfoWindow(marker);
 						});
+					}
+					
+					function fitBounds() {
+						var latlngbounds = new google.maps.LatLngBounds();
+						for(var i in markers) {
+							latlngbounds.extend(markers[i].getPosition());
+						}
+						map.setCenter(latlngbounds.getCenter());
+						map.fitBounds(latlngbounds);
 					}
 				});
 	};

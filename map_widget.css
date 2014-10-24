@@ -1,6 +1,11 @@
 #map_widget {
 height:300px;
 }
+
+#map_widget img {
+	max-width: initial;
+}
+
 #map_widget .customer,  #map_widget .text {
 	width:50%;
 	float:left;
@@ -30,5 +35,7 @@ height:300px;
 }
 #map_widget .infowindow {
 	height: 200px;
-	position:relative;
+	position: relative;
+	font-size: 11px;
 }
+
