@@ -43,8 +43,10 @@ function delComment(customer_idx, comment_idx) {
 		if(data_obj.customers[customer_idx].comments.length == 0) {
 			delete data_obj.customers[customer_idx];
 		}
+		clearForm(true);
 		drawCommentsTable();
 	}
+	save();
 }
 
 function saveCustomer(){
@@ -61,22 +63,28 @@ function saveCustomer(){
 	output.comments = [];
 	objectifyComments(output);
 	
-	if($('#index').val() >= 0) {
+	if($('#index').val() >= 0 && $('#index').val() != "") {
+		console.log($('#index').val());
 		data_obj.customers[$('#index').val()] = output;
 	}
 	else {
+		console.log('new');
 		data_obj.customers.push(output);
 	}
 	
 	drawCommentsTable();
 	clearForm(true);
+	save();
+}
+
+function save() {
 	$.post( "save.php", {json:JSON.stringify(data_obj)} )
-		.done(function() {
-			$('.alert-saved').show().fadeOut(2000);
-		})
-		.fail(function() {
-		   alert( "error saving" );
-		});
+	.done(function() {
+		$('.alert-saved').show().fadeOut(2000);
+	})
+	.fail(function() {
+	   alert( "error saving" );
+	});
 }
 
 function clearForm(skip_prompt) {

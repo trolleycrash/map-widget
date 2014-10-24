@@ -30,32 +30,38 @@ Licensed under the MIT License (http://opensource.org/licenses/MIT)
 							markers.push(marker);
 							
 							marker.contentString = template.render(data.customers[i]);
+							marker.setIcon('classic-pip.png');
+							marker.customer = data.customers[i];
  
 							google.maps.event.addListener(marker, 'click', function() {
-								infowindow.setContent(this.contentString);
-								infowindow.open(map,this);
-								initInfowWindow();
+								this.customer.idx = 0;
+								initInfoWindow(this);
 							});
+							
+							marker.setMap(map);
 						}
 						
 						if(data.customers && data.customers.length) {
-							var mcOptions = {gridSize: 50, maxZoom: 15};
-							var mc = new MarkerClusterer(map, markers, mcOptions);
+							/*var mcOptions = {gridSize: 50, maxZoom: 15};
+							var mc = new MarkerClusterer(map, markers, mcOptions);*/
 							map.setCenter(latlngbounds.getCenter());
 							map.fitBounds(latlngbounds);
 						}
 					});
 					
-					function initInfowWindow() {
+					function initInfoWindow(marker) {
+						var customer = marker.customer;
+						console.log(customer);
+						marker.contentString = template.render(customer);
+						infowindow.setContent(marker.contentString);
+						infowindow.open(map,marker);
 						var pager = $(map_container).find('.pager');
 						pager.click(function() {
+							console.log('click');
 							var el = $(this);
 							var iw = el.parent().parent();
-							idx = el.attr('data-rel');
-							iw.find('.comment').removeClass('selected-comment');
-							iw.find('.pager').removeClass('selected-pager');
-							$(iw.find('.comment')[idx]).addClass('selected-comment');
-							$(iw.find('.pager')[idx]).addClass('selected-pager');
+							marker.customer.idx = el.attr('data-rel');
+							initInfoWindow(marker);
 						});
 					}
 				});
