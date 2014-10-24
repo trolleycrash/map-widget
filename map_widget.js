@@ -20,7 +20,7 @@ Licensed under the MIT License (http://opensource.org/licenses/MIT)
 					var markers = [];
 					var infowindow = new google.maps.InfoWindow();
 						
-					$.getJSON( opts.input_file, function(data) {
+					$.getJSON( opts.include_path + opts.input_file, function(data) {
 						var latlngbounds = new google.maps.LatLngBounds();
 						for(var i in data.customers) {
 							var pos = new google.maps.LatLng(data.customers[i].lat, data.customers[i].lng)
@@ -31,7 +31,7 @@ Licensed under the MIT License (http://opensource.org/licenses/MIT)
 							markers.push(marker);
 							
 							marker.contentString = template.render(data.customers[i]);
-							marker.setIcon('classic-pip' + (data.customers[i].comments.length>10?"+10":data.customers[i].comments.length) + '.png');
+							marker.setIcon(opts.include_path + 'classic-pip' + (data.customers[i].comments.length>10?"+10":data.customers[i].comments.length) + '.png');
 							marker.customer = data.customers[i];
  
 							google.maps.event.addListener(marker, 'click', function() {
