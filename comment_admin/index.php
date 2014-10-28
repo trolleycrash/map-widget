@@ -38,6 +38,18 @@
 			     	</div>
 			     </div>
 			    <div class="col-sm-6">
+			     	<div class="form-group">
+				     	<label for="date">Display Name:</label>
+				     	<input class="form-control" id="display_name">
+			     	</div>
+			    </div>
+			    <div class="col-sm-6">
+			     	<div class="form-group">
+				     	<label for="date">Display Address:</label>
+				     	<input class="form-control" id="display_address">
+			     	</div>
+			    </div>
+			    <div class="col-sm-6">
 				    <div class="form-group">
 				     	<label for="email">Email:</label>
 				     	<input class="form-control" id="email">

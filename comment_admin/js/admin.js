@@ -41,7 +41,7 @@ function delComment(customer_idx, comment_idx) {
 	if(confirm('Are you sure you want to delete this comment?')) {
 		data_obj.customers[customer_idx].comments.splice(comment_idx, 1);
 		if(data_obj.customers[customer_idx].comments.length == 0) {
-			delete data_obj.customers[customer_idx];
+			data_obj.customers.splice(customer_idx, 1);
 		}
 		clearForm(true);
 		drawCommentsTable();
@@ -55,9 +55,11 @@ function saveCustomer(){
 	
 	output.first_name = $('#first_name').val();
 	output.last_name = $('#last_name').val();
+	output.display_name = $('#display_name').val();
 	output.email = $('#email').val();
 	output.date = $('#date').val();
 	output.address = $('#address').val();
+	output.display_address = $('#display_address').val();
 	output.lat = $('#lat').val();
 	output.lng = $('#lng').val();
 	output.comments = [];
